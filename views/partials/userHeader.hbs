@@ -1,0 +1,153 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+  integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+  crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+  .navbar-brand {
+    font-family: 'Glegoo', serif;
+    color: #ea895f;
+    font-size: 28px;
+    margin-right: 2rem;
+  }
+  
+  .navbar-brand span {
+    color: #333;
+  }
+  
+  .NavSeller {
+    width: 100%;
+    background: #ea895f;
+    color: #fff0f0;
+    padding: 0.75rem 0;
+  }
+  
+  .nav-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+  }
+  
+  .search-form {
+ display: flex;
+    width: 100%;
+    max-width: 500px;
+    height: fit-content;
+    flex-wrap: nowrap;
+    align-content: stretch;
+    flex-direction: row;
+    justify-content: center;
+    align-items: baseline;
+  }
+  
+  .search-input {
+    width: 100%;
+    background-color: rgb(255, 219, 219);
+    color: rgb(39, 39, 39);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px 0 0 4px;
+  }
+  
+  .search-button {
+    background-color: rgb(255, 219, 219);
+    color: rgb(255, 65, 65);
+    border: none;
+    height: 100%;
+    border-radius: 0 4px 4px 0;
+    padding: 0.5rem 1rem;
+  }
+  
+  .user-button {
+    background-color: rgb(255, 219, 219);
+    color: rgb(255, 65, 65);
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    margin-left: 1rem;
+  }
+  
+  .main-nav {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    font-family: 'Glegoo', serif;
+  }
+  
+  .main-nav a {
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff0f0;
+    transition: color 0.2s ease;
+  }
+  
+  .main-nav a:hover {
+    color: #333;
+  }
+  
+  @media (max-width: 992px) {
+    .nav-container {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .search-form {
+      margin: 1rem 0;
+    }
+    
+    .main-nav {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+      width: 100%;
+    }
+  }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="nav-container">
+    <a class="navbar-brand" href="/users/home">
+      Virtual Stylish App <span>{{user.userName}}</span>
+    </a>
+    
+    <div class="d-flex align-items-center">
+      <form action="/users/search" method="post" class="search-form">
+        <input type="text" class="search-input" name="search" placeholder="Search for products" required>
+        <button type="submit" class="search-button">
+          <i class="fa-solid fa-search"></i>
+        </button>
+      </form>
+      
+      {{#if user}}
+      <div class="dropdown">
+        <button class="user-button">
+          <i class='fa-solid fa-user'></i>
+        </button>
+        <div class="dropdown-content">
+          <a href="/users/logout">Logout</a>
+        </div>
+      </div>
+      {{/if}}
+    </div>
+  </div>
+</nav>
+
+<div class="NavSeller">
+  <div class="main-nav">
+    {{#if user}}
+    <a href="/users/home">HOME</a>
+    <a href="/users/all-products">PRODUCTS</a>
+    <a href="/users/cart">CART</a>
+    <a href="/users/myorders">ORDERS</a>
+    <a href="/users/Customize">CUSTOMIZE</a>
+    <a href="#wether">WEATHER</a>
+    <a href="/users/all-med-blogs">Blogs</a>
+
+
+
+    {{/if}}
+  </div>
+</div>

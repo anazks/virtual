@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="2">
+    <title>FASHION STUDIO</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #6a1b9a;
+            --secondary-color: #9c27b0;
+            --accent-color: #e1bee7;
+            --text-color: #333;
+            --light-bg: #f8f9fa;
+        }
+        
+        body {
+            padding-top: 56px;
+            font-family: 'Roboto', sans-serif;
+            color: var(--text-color);
+        }
+        
+        .navbar {
+            background-color: var(--primary-color);
+        }
+        
+        .navbar-brand {
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        
+        .navbar a {
+            text-decoration: none;
+            color: white;
+        }
+        
+        li {
+            list-style-type: none;
+            padding: 10px;
+        }
+        
+        .jumbotron {
+            background: linear-gradient(rgba(106, 27, 154, 0.7), rgba(156, 39, 176, 0.7)), url('https://api.placeholder.com/1920/1080');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 120px 20px;
+            margin-bottom: 0;
+            position: relative;
+        }
+        
+        .features {
+            padding: 60px 0;
+            background-color: var(--light-bg);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+        }
+        
+        .feature-box {
+            text-align: center;
+            padding: 30px 20px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            background-color: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .feature-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
+        .designer-section {
+            padding: 60px 0;
+            background: white;
+        }
+        
+        .model-preview {
+            height: 400px;
+            border: 2px solid var(--accent-color);
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            background: #f0f0f0;
+        }
+        
+        .design-controls {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .color-swatch {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin: 0 5px;
+            cursor: pointer;
+            border: 2px solid white;
+            transition: all 0.2s ease;
+        }
+        
+        .color-swatch:hover, .color-swatch.active {
+            transform: scale(1.2);
+            border: 2px solid var(--text-color);
+        }
+        
+        .style-option {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .style-option:hover, .style-option.active {
+            background-color: var(--accent-color);
+            border-color: var(--primary-color);
+        }
+        
+        .trending-section {
+            padding: 60px 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        
+        .trending-card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .trending-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
+        .trending-img {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .trending-info {
+            padding: 15px;
+        }
+        
+        .footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            padding: 10px 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .button_chat {
+            width: 70px;
+            height: 70px;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            background-color: var(--secondary-color);
+            color: white;
+            border-radius: 50%;
+            border: none;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .button_chat:hover {
+            transform: scale(1.1);
+            background-color: var(--primary-color);
+        }
+        
+        .dress-customization {
+            margin-top: 30px;
+        }
+        
+        .customization-title {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .size-guide-toggle {
+            color: var(--secondary-color);
+            cursor: pointer;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="#">FASHION STUDIO</a>
+    <li><a href="/seller">Shop</a></li>
+    <li><a href="/users">User</a></li>
+    <li><a href="/login">Admin</a></li>
+    {{!-- <li><a href="/consultant">Stylists</a></li> --}}
+    <li><a href="http://localhost:7000/" target="_blank">Group chat</a></li>
+    <!-- Original navigation links preserved -->
+</nav>
+
+<!-- Jumbotron -->
+<div class="jumbotron">
+    <h1 class="display-4">{{sending_news.title}}</h1>
+    <p class="lead">{{sending_news.content}}</p>
+    <a class="btn btn-primary btn-lg" href="#designer" role="button">Design Now</a>
+</div>
+
+<!-- Features -->
+<div class="container features">
+    <div class="row">
+        <div class="col-12 text-center mb-5">
+            <h2>Virtual Fashion Design</h2>
+            <p class="lead">Create your perfect dress with our interactive tools</p>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-box">
+                <i class="feature-icon fas fa-palette"></i>
+                <h3>Premium Fabrics</h3>
+                <p>Choose from hundreds of high-quality fabrics, colors, and patterns for your custom designs.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-box">
+                <i class="feature-icon fas fa-tshirt"></i>
+                <h3>Custom Fit</h3>
+                <p>Every dress is tailored to your precise measurements for the perfect fit every time.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-box">
+                <i class="feature-icon fas fa-truck"></i>
+                <h3>Fast Delivery</h3>
+                <p>Your custom-designed dress ships directly to your doorstep within 2 weeks.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Virtual Designer Section -->
+<div class="designer-section" id="designer">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2>Design Your Dream Dress</h2>
+                <p class="lead">Our virtual designer makes fashion creation easy</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="model-preview">
+                    <img style="width: 70%;height:100%" src="https://static.vecteezy.com/system/resources/previews/009/590/382/original/3d-online-shopping-store-with-mobile-shopping-bag-icon-ecommerce-illustration-free-png.png" alt="Model preview" id="model-preview-img">
+                </div>
+                <div class="text-center mt-3">
+                    <button class="btn btn-outline-secondary mr-2"><i class="fas fa-share-alt"></i> Share your Friends</button>
+                    <button class="btn btn-outline-secondary mr-2"><i class="fas fa-save"></i> Save Photos</button>
+                    <button class="btn btn-primary"><i class="fas fa-shopping-cart"></i>Cart Management</button>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="design-controls">
+                    <h4>Customize Your Dress</h4>
+                    
+                    <div class="dress-customization">
+                        <h5 class="customization-title">Dress Style</h5>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="style-option active" data-style="a-line">
+                                    <img style="height: 50px;" src="https://static.vecteezy.com/system/resources/previews/016/017/018/non_2x/ecommerce-icon-free-png.png" alt="A-line">
+                                    <p>Fast Delivery</p>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="style-option" data-style="mermaid">
+                                    <img style="height: 50px;" src="https://cdn-icons-png.flaticon.com/512/6954/6954763.png" alt="Mermaid">
+                                    <p>Security</p>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="style-option" data-style="ballgown">
+                                    <img style="height: 50px;" src="https://www.creativefabrica.com/wp-content/uploads/2020/05/14/Ecommerce-icon-Graphics-4123404-1.jpg" alt="Ball Gown">
+                                    <p>Available Anywhere</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="dress-customization">
+                        <h5 class="customization-title">Create Your Dream Solutions</h5>
+                        
+                    </div>
+                    
+                  
+                    
+                   
+                    
+                   
+                    
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Trending Designs Section -->
+<div class="trending-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2>Trending Designs</h2>
+                <p class="lead">Get inspired by our most popular styles</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="trending-card">
+                    <div class="trending-img" style="background-image: url('https://images-na.ssl-images-amazon.com/images/I/61X4931c3xL.jpg');"></div>
+                    <div class="trending-info">
+                        <h4>Evening Gown</h4>
+                        <p>Our most popular formal design</p>
+                        {{!-- <button class="btn btn-sm btn-outline-primary">Customize</button> --}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="trending-card">
+                    <div class="trending-img" style="background-image: url('https://i5.walmartimages.com/asr/85674104-3f06-4bbf-ac81-c2f446886c8e_1.338272aa8d4dd3710e5be71c5b3f1c3f.jpeg');"></div>
+                    <div class="trending-info">
+                        <h4>Cocktail Dress</h4>
+                        <p>Perfect for semi-formal events</p>
+                        {{!-- <button class="btn btn-sm btn-outline-primary">Customize</button> --}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="trending-card">
+                    <div class="trending-img" style="background-image: url('https://www.isueer.com/wp-content/uploads/2018/04/cocktail-dress-blue-0696-01.jpg');"></div>
+                    <div class="trending-info">
+                        <h4>Casual Maxi</h4>
+                        <p>Comfortable yet stylish</p>
+                        {{!-- <button class="btn btn-sm btn-outline-primary">Customize</button> --}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="socialMedia">
+  <a href="https://www.facebook.com" target="_blank" class="icon fb" title="Facebook">
+    <i class="fab fa-facebook-f"></i>
+  </a>
+  <a href="https://www.instagram.com" target="_blank" class="icon insta" title="Instagram">
+    <i class="fab fa-instagram"></i>
+  </a>
+  <a href="https://www.pinterest.com" target="_blank" class="icon pinterest" title="Pinterest">
+    <i class="fab fa-pinterest-p"></i>
+  </a>
+</div>
+
+<!-- Font Awesome CDN (include in <head>) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+    .socialMedia {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 18px;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.fb {
+  background-color: #3b5998;
+}
+
+.insta {
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+}
+
+.pinterest {
+  background-color: #e60023;
+}
+
+.icon:hover {
+  transform: scale(1.1);
+  opacity: 0.9;
+}
+
+</style>
+<!-- Chat Button (Preserved from original) -->
+<button class="button_chat" id="open">
+    <i class="fas fa-comment-dots"></i>
+</button>
+
+<!-- Footer -->
+<footer class="footer">
+    <p>&copy; 2025 Fashion Studio. All rights reserved.</p>
+</footer>
+
+<!-- Bootstrap JS and Popper.js -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script>
+    // Simple interactive elements for the dress designer
+    $(document).ready(function() {
+        // Style options
+        $('.style-option').click(function() {
+            $(this).siblings().removeClass('active');
+            $(this).addClass('active');
+            updateDressPreview();
+        });
+        
+        // Color swatches
+        $('.color-swatch').click(function() {
+            $('.color-swatch').removeClass('active');
+            $(this).addClass('active');
+            updateDressPreview();
+        });
+        
+        // Sleeve length and dress length changes
+        $('#sleeve-length, #dress-length').change(function() {
+            updateDressPreview();
+        });
+        
+        // Size selection
+        $('input[name="size"]').change(function() {
+            updateDressPreview();
+        });
+        
+        // Function to simulate dress preview update
+        function updateDressPreview() {
+            // In a real application, this would update the 3D model or image
+            console.log('Updating dress preview with new selections');
+            
+            // Get all selected options
+            const style = $('.style-option.active').data('style');
+            const neckline = $('.style-option[data-neckline].active').data('neckline');
+            const color = $('.color-swatch.active').data('color');
+            const sleeve = $('#sleeve-length').val();
+            const length = $('#dress-length').val();
+            const size = $('input[name="size"]:checked').val();
+            
+            // Log selections (would be used to update preview in real app)
+            console.log({style, neckline, color, sleeve, length, size});
+            
+            // Simulate loading of new preview
+            $('#model-preview-img').css('opacity', '0.5');
+            setTimeout(function() {
+                $('#model-preview-img').css('opacity', '1');
+            }, 500);
+        }
+        
+        // Preserved from original code
+        let btnOpen = document.querySelector('#open');
+        let myTab;
+        btnOpen.addEventListener('click', ()=>{
+            myTab = window.open('https://chat.vercel.ai/', '_blank', 'height=500,width=500');
+        });
+    });
+</script>
+</body>
+</html>

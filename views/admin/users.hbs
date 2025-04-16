@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users List</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css">
+    <style>
+        .action-buttons {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .btn-action {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container p-2 bg-light mt-5">
+        <h2 class="text-center m-3">Users List</h2>
+        
+        <div class="action-buttons text-end mb-3">
+            <button class="btn btn-primary btn-action" id="downloadPdf">Download PDF</button>
+            <button class="btn btn-secondary btn-action" id="printTable">Print</button>
+        </div>
+        
+        <div class="table-responsive">
+            <table class="table bg-light p-2" id="usersTable">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Mobile</th>
+                        <th scope="col">Account Status</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each users}}
+                    <tr>
+                        <td scope="row">{{userName}}</td>
+                        <td>{{email}}</td>
+                        <td>{{mobile}}</td>
+                        <td>{{status}}</td>
+                        <td><a href="/block-user/{{_id}}" class="btn btn-danger">Block</a></td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Initialize the PDF library
+        const { jsPDF } = window.jspdf;
+        
+        // Function to generate and download PDF
+        document.getElementById('downloadPdf').addEventListener('click', function() {
+            const doc = new jsPDF();
+            
+            // Add title to PDF
+            doc.setFontSize(18);
+            doc.text('Users List', 14, 22);
+            
+            // Convert table to PDF
+            doc.autoTable({
+                html: '#usersTable',
+                startY: 30,
+                theme: 'grid',
+                headStyles: { fillColor: [44, 62, 80], textColor: 255 },
+                columnStyles: {
+                    4: { cellWidth: 0 }, // Skip action column in PDF
+                },
+                didParseCell: function(data) {
+                    // Skip action button column for PDF
+                    if (data.column.index === 4) {
+                        data.cell.text = ''; // Remove action button content from PDF
+                    }
+                }
+            });
+            
+            // Save the PDF
+            doc.save('users-list.pdf');
+        });
+        
+        // Function to print the table
+        document.getElementById('printTable').addEventListener('click', function() {
+            window.print();
+        });
+    </script>
+</body>
+</html>

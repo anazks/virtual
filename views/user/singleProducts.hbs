@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Single Product View</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+  }
+
+
+  .product-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .product-image {
+    flex: 1;
+    min-width: 300px;
+    padding: 10px;
+  }
+
+  .product-image img {
+    width: 100%;
+    border-radius: 10px;
+  }
+
+  .product-info {
+    flex: 2;
+    padding: 20px;
+  }
+
+  .product-info h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+
+  .product-info p {
+    color: #555;
+    line-height: 1.6;
+  }
+
+  .product-info .price {
+    font-size: 24px;
+    color: #E63946;
+    margin: 15px 0;
+  }
+
+  .buttons a {
+    display: inline-block;
+    margin-right: 10px;
+    padding: 12px 24px;
+    color: white;
+    background-color: #007bff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  }
+
+  .buttons a.buy-now {
+    background-color: #28a745;
+  }
+
+  .buttons a:hover {
+    opacity: 0.85;
+  }
+
+  .related-products {
+    margin-top: 40px;
+  }
+
+  .related-products h2 {
+    margin-bottom: 20px;
+  }
+
+  .related-product-card {
+    display: inline-block;
+    width: calc(30% - 20px);
+    margin: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+
+  .related-product-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+  }
+
+  .related-product-card h3 {
+    font-size: 18px;
+    margin: 10px 0;
+  }
+
+  .related-product-card p {
+    color: #555;
+    margin-bottom: 10px;
+  }
+</style>
+</head>
+<body>
+    {{> userHeader}}
+<div class="container">
+  <div class="product-wrapper">
+    <div class="product-image">
+      <img src="/images/product/{{product._id}}.jpg" alt="{{product.productName}}" />
+    </div>
+    <div class="product-info">
+      <h1>{{product.productName}}</h1>
+      <p class="price">₹ {{product.mrp}}</p>
+      <p>{{product.description}}</p>
+      <div class="buttons">
+        <a href="/users/addtoCart/{{product._id}}" class="add-to-cart">Add to Cart</a>
+        <a href="/users/buynow/{{product._id}}/1" class="buy-now">Buy Now</a>
+      </div>
+    </div>
+  </div>
+
+  {{#if relatedProducts.products.length}}
+  <div class="related-products">
+    <h2>Related Products</h2>
+    {{#each relatedProducts.products}}
+    <div class="related-product-card">
+      <img src="{{this.thumbnail}}" alt="{{this.title}}">
+      <h3>{{this.title}}</h3>
+      <p>Price: ₹{{this.price}}</p>
+      <p>Rating: {{this.rating}} ⭐</p>
+      <a href="/users/relatedView/{{id}}" class="btn btn-success">Enquire</a>
+    </div>
+    {{/each}}
+  </div>
+  {{/if}}
+</div>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products Data Table</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css">
+    <style>
+        .action-buttons {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .btn-action {
+            margin-right: 10px;
+        }
+        .product-image {
+            height: 50px;
+            width: 50px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <div class="container p-2 bg-light mt-5">
+        <h2 class="text-center m-3">Products List</h2>
+        
+        <div class="action-buttons text-end mb-3">
+            <button class="btn btn-primary btn-action" id="downloadPdf">Download PDF</button>
+            <button class="btn btn-secondary btn-action" id="printTable">Print</button>
+        </div>
+        
+        <div class="table-responsive">
+            <table class="table bg-light p-2" id="productsTable">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">MRP</th>
+                        <th scope="col">Selling Price</th>
+                        <th scope="col">Image</th>
+                        <th scope="col">Seller Name</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each products}}
+                    <tr>
+                        <td scope="row">{{productName}}</td>
+                        <td>{{mrp}}</td>
+                        <td>{{price}}</td>
+                        <td><img class="product-image" src="/images/product/{{_id}}.jpg" alt=""></td>
+                        <td>{{sellerName}}</td>
+                        <td><a href="/delete-product/{{_id}}" class="btn btn-danger">Delete</a></td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Initialize the PDF library
+        const { jsPDF } = window.jspdf;
+        
+        // Function to generate and download PDF
+        document.getElementById('downloadPdf').addEventListener('click', function() {
+            const doc = new jsPDF();
+            
+            // Add title to PDF
+            doc.setFontSize(18);
+            doc.text('Products List', 14, 22);
+            
+            // Convert table to PDF
+            doc.autoTable({
+                html: '#productsTable',
+                startY: 30,
+                theme: 'grid',
+                headStyles: { fillColor: [44, 62, 80], textColor: 255 },
+                columnStyles: {
+                    3: { cellWidth: 0 }, // Skip image column
+                },
+                didParseCell: function(data) {
+                    // Skip image column for PDF
+                    if (data.column.index === 3) {
+                        data.cell.text = ''; // Remove image content from PDF
+                    }
+                }
+            });
+            
+            // Save the PDF
+            doc.save('products-list.pdf');
+        });
+        
+        // Function to print the table
+        document.getElementById('printTable').addEventListener('click', function() {
+            window.print();
+        });
+    </script>
+</body>
+</html>
