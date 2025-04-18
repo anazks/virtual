@@ -22,7 +22,9 @@ const {
   deleteMedBlog,
   blockMedConsultant,
   blockUser,
-  deleteFromProduct
+  deleteFromProduct,
+  reports
+
 } = require("../controllers/admin-controller")
 
 
@@ -51,6 +53,6 @@ router.get("/block-med-consultant/:id", checkAdmin, blockMedConsultant)
 router.get("/block-user/:id", checkAdmin, blockUser)
 
 router.get("/deleteProduct/:id",checkAdmin,deleteFromProduct)
-
+router.get('/reports',checkAdmin,reports)
 module.exports = router;
 

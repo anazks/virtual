@@ -8,6 +8,7 @@ const newsModel = require('../models/news-model')
 
 const bcrypt = require("bcrypt");
 const productModel = require("../models/product-model");
+const orderModel = require("../models/order-model");
 
 
 const getMainHomePage = async (req, res) => {
@@ -258,6 +259,17 @@ const deleteFromProduct= async(req,res)=>{
         
     }
 }
+const reports = async(req,res)=>{
+    try {
+       let orders = await orderModel.find({})
+       let { admin } = req.session;
+
+       console.log(orders)
+       res.render('admin/Report',{orders,admin})
+    } catch (error) {
+        console.log(error)
+    }
+}
 module.exports = {
     getMainHomePage,
     getLoginPage,
@@ -278,5 +290,6 @@ module.exports = {
     deleteMedBlog,
     blockMedConsultant,
     blockUser,
-    deleteFromProduct
+    deleteFromProduct,
+    reports
 }

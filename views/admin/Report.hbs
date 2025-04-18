@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Report</title>
+<style>
+    body {
+  padding: 30px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #2c3e50;
+}
+
+.filters {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.filters label {
+  font-size: 14px;
+  color: #555;
+}
+
+.filters input[type="date"] {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.filters button {
+  padding: 6px 14px;
+  background-color: #2980b9;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.filters button:hover {
+  background-color: #1f6391;
+}
+
+table.dataTable {
+  border-collapse: collapse;
+  width: 100%;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+table.dataTable thead {
+  background-color: #3498db;
+  color: white;
+}
+
+table.dataTable thead th {
+  padding: 12px 8px;
+  font-size: 14px;
+}
+
+table.dataTable tbody td {
+  padding: 10px;
+  font-size: 13px;
+  color: #333;
+}
+
+table.dataTable tbody tr:nth-child(even) {
+  background-color: #f4f8fb;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+  border-radius: 6px;
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+}
+
+.dataTables_wrapper .dataTables_length select {
+  border-radius: 6px;
+  padding: 5px 8px;
+  border: 1px solid #ccc;
+}
+
+.dt-buttons .dt-button {
+  background-color: #2ecc71;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  color: white;
+  margin-right: 5px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.dt-buttons .dt-button:hover {
+  background-color: #27ae60;
+}
+
+</style>
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+
+  <!-- jQuery + DataTables + Buttons -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.0/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+  <style>
+    body { padding: 20px; font-family: Arial; }
+    .filters { margin-bottom: 20px; }
+    table td, table th { font-size: 14px; }
+  </style>
+</head>
+
+<body>
+
+  <h2>Order Report</h2>
+
+  <div class="filters">
+    <label>From: <input type="date" id="fromDate"></label>
+    <label>To: <input type="date" id="toDate"></label>
+    <button onclick="filterByDate()">Filter</button>
+    <button onclick="clearDateFilter()">Clear</button>
+  </div>
+
+  <table id="orderTable" class="display nowrap" style="width:100%">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Seller</th>
+        <th>Buyer</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Qty</th>
+        <th>Total Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each orders}}
+        <tr>
+          <td>{{this.productName}}</td>
+          <td>{{this.sellerName}}</td>
+          <td>{{this.buyerName}}</td>
+          <td>{{this.buyerPhone}}</td>
+          <td>{{this.buyerEmail}}</td>
+          <td>{{this.date}}</td>
+          <td>{{this.status}}</td>
+          <td>{{this.quantity}}</td>
+          <td>{{this.totalPrice}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  <script>
+    let dataTable;
+
+    $(document).ready(function () {
+      dataTable = $('#orderTable').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+          'csv', 'excel', 'pdf', 'print'
+        ]
+      });
+    });
+
+    function parseDate(str) {
+      const [d, m, y] = str.split('/');
+      return new Date(`${y}-${m}-${d}`);
+    }
+
+    function filterByDate() {
+      const from = new Date(document.getElementById('fromDate').value);
+      const to = new Date(document.getElementById('toDate').value);
+
+      dataTable.rows().every(function () {
+        const rowDate = parseDate(this.data()[5]);
+        if (from && to && (rowDate >= from && rowDate <= to)) {
+          $(this.node()).show();
+        } else {
+          $(this.node()).hide();
+        }
+      });
+    }
+
+    function clearDateFilter() {
+      $('#fromDate').val('');
+      $('#toDate').val('');
+      dataTable.rows().every(function () {
+        $(this.node()).show();
+      });
+    }
+  </script>
+
+</body>
+</html>
